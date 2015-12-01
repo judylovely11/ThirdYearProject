@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset = "UTF-8"/>
+	<title>canvas Drawing</title>
+		<style>
+			canvas{width: 1200px; height:600px; background: #efefef;}
+			.wrapper{width: 110px; padding: 15px; position: fixed; top:15px; left:15px; border-radius: 3px; background: rgba(0,0,0,0.6);
+			}
+			input{background: none; border: none; padding: 3px; outline: none; border-bottom: 1px solid white; width: 45px; color:white;
+			}
+			.addbutton{background: #da3610; border-radius: 3px; text-align: center; color: white; padding: 3px; font-size: 12px;margin-top: 8px; cursor: pointer; border: 1px solid red;
+			}
+			.drawbutton{background: white; border-radius: 3px; text-align: center; color: black; padding: 3px; font-size: 12px;margin-top: 8px; cursor: pointer; border: 1px solid #efefef;
+			}
+		</style>
+
+	<script src = "jquery-1.11.3.min.js"></script>
+	<script>
+		var $canvas;
+		var canvas;
+		var context;
+		var WIDTH = 1200;
+		var HEIGHT = 600;
+
+		$(window).ready(function(){
+			var inputwrapper= '<div class = "inputwrapper"><input type "text" placeholder = "Input x" class = "x"><input type ="text" placeholder = "Input y" class = "y"></div>';
+
+			$(".addbutton").click(function(){
+				$(inputwrapper).appendTo($(".wrapper2"));
+			});
+
+
+			$canvas = $("#mycanvas");
+			canvas = $canvas.get(0); //jquery
+			context = canvas.getContext('2d');
+
+			context.beginPath();
+			context.moveTo(100, 100);
+			context.lineTo(300, 250);
+			context.closePath();
+			context.strokeStyle = "#ED006D";
+			context.stroke();
+
+			context.beginPath();
+			context.moveTo(400, 400);
+			context.lineTo(700, 700);
+			context.lineWidth = 3;
+			context.lineCap = "round";
+			context.closePath();
+			context.strokeStyle = "blue";
+			context.stroke();
+
+			context.moveTo(900, 300);
+			context.arc(800, 300, 100, 0, Math.PI*2, true);
+			context.fillStyle = "rgb(255, 0, 0)";
+			context.fill();
+			context.save();
+			context.closePath();
+			context.stroke();
+		});
+	</script>
+</head>
+<body>
+	<canvas width= "1200"height="600"id="mycanvas"></canvas>
+	<div class = "wrapper">
+		<div class = "wrapper2">
+			<div class = "inputwrapper">
+				<input type "text" placeholder = "Input x" class = "x">
+				<input type "text" placeholder = "Input y" class = "y">
+			</div>
+		</div>
+		<div class = "addbutton"> 좌표 추가 </div>
+		<div class = "drawbutton"> 그리기버튼 </div>
+	</div>
+</body>
+</html>
