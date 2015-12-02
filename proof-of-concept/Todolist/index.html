@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Todo List App</title>
+	<script src="jquery-1.11.3.min.js"></script>
+    <script src="db.js"></script>
+    <script src="app.js"></script>
+  <style>
+	 * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+	
+	body, html {
+	  padding: 0;
+	  margin: 0;
+	}
+	
+	body {
+	  font-family: Helvetica, Arial, sans-serif;
+	  color: #545454;
+	  background: #F7F7F7;
+	}
+	
+	#page-wrapper {
+	  width: 550px;
+	  margin: 2.5em auto;
+	  background: #FFF;
+	  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+	  border-radius: 3px;
+	}
+	@media(max-width:1000px){
+		#page-wrapper {
+			width: 100%;
+		}
+	
+	}
+	
+	
+	#new-todo-form {
+	  padding: 10px;
+	  background: #da3610;
+	  border-top-left-radius: 3px;
+	  border-top-right-radius: 3px;
+	}
+	
+	#new-todo {
+	  width: 100%;
+	  padding: 10px;
+	  font-size: 14px;
+	  border-radius: 3px;
+	  border: 0;
+	}
+	
+	#todo-items {
+	  list-style: none;
+	  padding: 0.5em 1em;
+	  margin: 0;
+	}
+	
+	#todo-items li {
+	  padding: 0.5em;
+	  background: #FFF;
+	  border-bottom: 1px solid #EEE;
+	  margin: 0.5em 0;
+	  overflow:hidden;
+	}
+	#todo-items li>span{
+		float:left;
+		font-size:14px;
+		line-height:2;
+	}
+	#todo-items li>.btnDelete {
+		margin-top:4px;
+	  	float:right;
+		width:16px;
+		height:16px;
+		background:url("delete.png");
+	}
+  </style>
+
+</head>
+<body>
+  <div id="page-wrapper">
+    <form id="new-todo-form" method="POST" action="#">
+      <input type="text" name="new-todo" id="new-todo" placeholder="Please input your to do element ... " required>
+    </form>
+
+    <ul id="todo-items"></ul>
+  </div>
+</body>
+</html>
