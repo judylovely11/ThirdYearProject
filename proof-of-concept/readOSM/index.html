@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+canvas{position:fixed;top:0;height:100%;width:100%;}
+.control{position:fixed;top:65px;right:15px;width:30px;border:1px solid #e4e4e4;}
+.control>.btn{height:30px;background: #fff;border-bottom:1px solid #e4e4e4;line-height:30px;text-align: center;font-size:20px;cursor:pointer;}
+.control>.zoomLevel{height:140px;overflow:hidden; position: relative;padding:5px 0 0px;}
+.control>.zoomLevel .grid{height:14px;border-top:1px solid #e0e0e0;width:20px;margin:0 auto;}
+.control>.zoomLevel .back{position:absolute;top:5px;height:134px;left:11px;width:5px;background:#ccc;border:1px solid #bbb;}
+.control>.zoomLevel .current{position:absolute;top:47.5%;height:5%;width:25px;left:2.5px;background:#fff;border:1px solid #da3610;box-sizing:border-box;}
+
+	</style>
+	<!-- xeicon 아이콘 쉽게쓰기 -->
+  <link rel="stylesheet" href="http://cdn.jsdelivr.net/xeicon/1.0.4/xeicon.min.css">
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+	<script>
+	var ZOOM_LEVEL=47.5;
+	var ZOOM_FACTOR = 0.75;
+	var canvas;
+	var c;
+	var minlat=37.5331100;
+	var minlon=126.9886000;
+	var maxlat=37.5348000;
+	var maxlon=126.9916600;
+	var zoomLevel= 0.00005; // 0~ 0.06
+	var current_lat=37.54;
+	var current_lon=126.99;
+	var center_x=600;
+	var center_y=300;
+	var nodeObject = new Object();
+	var wayObject = new Object();
+	var tileObject = new Object();
+
+
+		$(document).ready(function(){
+			canvas = document.getElementById('canvas');
+			c = canvas.getContext('2d');
+
+		})
+		$.get('http://judylovely11.dothome.co.kr',function(data){				// get the xml data from ~.xml
+	    var xml = $(data);												// parse the data to xml
+	    var node= xml.find('node');	// xml에서 node 탐색
+	    var way= xml.find('way');		// xml에서 way 탐색
+    	
+    	
+    	node.each(function(){
+    			var n={
+		    		lat:0,
+		    		lon:0,
+		    	};
+    			var id=$(this).attr('id');
+    			n.lat=$(this).attr('lat');
+    			n.lon=$(this).attr('lon');
+    			nodeObject[id]=n;
+    	});
+
+    	way.each(function(){
+    			var node=new Array();
+    			var id=$(this).attr('id');
+    			var nd=$(this).children('nd');
+    			nd.each(function(){
+    				node.push(nodeObject[$(this).attr('ref')]);
+    			});
+    			wayObject[id]=node;
+    	});
+    	console.log(nodeObject);
+    	console.log(wayObject);
+    	render();
+
+	});
+	function render(){
+			c.fillStyle="#ffffff";
+			c.fillRect(0,0,1200,600);
+    	 for(var wayone in wayObject){
+       		c.beginPath();
+    			for(j=0;j<wayObject[wayone].length;j++){
+    				console.log(wayObject[wayone][j]);
+    				//var x=(wayObject[wayone][j].lat-minlat+0.03)*30/(maxlat-minlat);
+    				//var y=(wayObject[wayone][j].lon-minlon+0.05)*30/(maxlon-minlon);
+
+    				var lat=wayObject[wayone][j].lat;
+    				var lon=wayObject[wayone][j].lon;
+
+    				
+    				var start_lat	= current_lat-(center_x*zoomLevel);
+    				var end_lat		= current_lat+(center_x*zoomLevel);
+    				var start_lon	= current_lon-(center_y*zoomLevel);
+    				var end_lon		= current_lon+(center_y*zoomLevel);
+
+
+    				var offsetLon = lon - current_lon;
+        		var x = center_x + (offsetLon / zoomLevel);
+    				var offsetLat = lat - current_lat;
+        		var y = center_y - (offsetLat / zoomLevel);
+        		console.log("x:"+x+" start_lon:"+start_lon+" end_lon:"+end_lon);
+/*
+        		if(start_lon<x || end_lon>x){
+        			continue;
+        		}
+        		if(start_lat<y || end_lat>y){
+        			continue;
+        		}
+        		*/
+    				console.log(x+"/"+y);
+    				if(j==0)
+    					c.moveTo(x,y);
+    				else
+    					c.lineTo(x,y);
+  				}   
+  				c.stroke();
+       }
+     }
+</script>
+</head>
+<body>
+		<canvas id="canvas" width="1200" height="600">
+		</canvas>
+		<!-- 오른쪽위 줌 관련 메뉴 -->
+    <div class="control">
+        <div class="btn btnZoomin">
+            <i class="xi-magnifier-expand"></i>
+        </div>
+        <div class="btn zoomLevel">
+             <!-- 그리드를 위한 배경 -->
+            <div class="back"></div>
+            <div class="grid"></div>
+            <div class="grid"></div>
+            <div class="grid"></div>
+            <div class="grid"></div>
+            <div class="grid"></div>
+            <div class="grid"></div>
+            <div class="grid"></div>
+            <div class="grid"></div>
+            <div class="grid"></div>
+             <div class="grid"></div>
+             <!-- 현재 줌 레벨 표시할 막대바 -->
+             <div class="current"></div>
+        </div>
+        <div class="btn btnZoomout">
+            <i class="xi-magnifier-reduce"></i>
+        </div>
+    </div>
+</body>
+</html>
