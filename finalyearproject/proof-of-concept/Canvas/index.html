@@ -30,11 +30,26 @@
 				$(inputwrapper).appendTo($(".wrapper2"));
 			});
 
+			$(".drawbutton").click(function(){
+	            context.beginPath();
+	            $('.inputwrapper').each(function(index){
+	            	var x=$('.x',this).val();
+	                var y=$('.y',this).val();
+	               if(index==0){
+	                  context.moveTo(x, y);
+	               }
+	               else{
+	                  context.lineTo(x, y);
+	               }
+	            });
+	            context.stroke();
+	         });
 
 			$canvas = $("#mycanvas");
 			canvas = $canvas.get(0); //jquery
 			context = canvas.getContext('2d');
-
+			
+			/*
 			context.beginPath();
 			context.moveTo(100, 100);
 			context.lineTo(300, 250);
@@ -58,6 +73,7 @@
 			context.save();
 			context.closePath();
 			context.stroke();
+			*/
 		});
 	</script>
 </head>
@@ -70,8 +86,8 @@
 				<input type "text" placeholder = "Input y" class = "y">
 			</div>
 		</div>
-		<div class = "addbutton"> 좌표 추가 </div>
-		<div class = "drawbutton"> 그리기버튼 </div>
+		<div class = "addbutton"> Add coordinate </div>
+		<div class = "drawbutton"> Draw! </div>
 	</div>
 </body>
 </html>
