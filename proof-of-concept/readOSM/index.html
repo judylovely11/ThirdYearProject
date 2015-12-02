@@ -39,7 +39,7 @@
 			c = canvas.getContext('2d');
 
 		})
-		$.get('https://svn.cs.rhul.ac.uk/personal/zava275/finalyearproject/proof-of-concept/readOSM/',function(data){				// get the xml data from ~.xml
+		$.get('https://svn.cs.rhul.ac.uk/personal/zava275/finalyearproject/proof-of-concept/readOSM/map2.osm',function(data){				// get the xml data from ~.xml
 	    var xml = $(data);												// parse the data to xml
 	    var node= xml.find('node');	// xml에서 node 탐색
 	    var way= xml.find('way');		// xml에서 way 탐색
